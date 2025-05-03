@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.abhishek</groupId>
+  <artifactId>invoices-service</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>central</id>
+      <url>https://repo.maven.apache.org/maven2</url>
+    </repository>
+  </repositories>
+
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.tomcat.embed</groupId>
+      <artifactId>tomcat-embed-core</artifactId>
+      <version>10.1.8</version>
+    </dependency>
+  </dependencies>
+
+<build>
+<plugins>
+
+<!--  This plugin is used for telling the main class file that should begin when the jar is running, it creates a manifest.mf file which denotes the main class that has to run -->
+
+<!--  Commenting this out since we're providing a shade plugin which does mention the main class. -->
+<!--  <plugin>-->
+<!--    <groupId>org.apache.maven.plugins</groupId>-->
+<!--    <artifactId>maven-jar-plugin</artifactId>-->
+<!--    <version>3.4.2</version>-->
+<!--    <configuration>-->
+<!--      <archive>-->
+<!--        <manifest>-->
+<!--          <mainClass>com.abhishek.ApplicationLauncher</mainClass>-->
+<!--        </manifest>-->
+<!--      </archive>-->
+<!--    </configuration>-->
+<!--  </plugin>-->
+
+
+  <!--  This plugin is used to get other dependencies inside the jar file -->
+  <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-shade-plugin</artifactId>
+    <version>3.6.0</version>
+    <executions>
+      <execution>
+        <phase>package</phase>
+        <goals>
+          <goal>shade</goal>
+        </goals>
+
+<!--        this configuration is needed since shade plugin will extract all 3rd part packages, and if they come with their manifest.mf file, it will be overridden. We need to provide this and it would mean that previous lines of code is not required. -->
+        <configuration>
+          <transformers>
+            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+              <mainClass>com.abhishek.ApplicationLauncher</mainClass>
+            </transformer>
+          </transformers>
+        </configuration>
+      </execution>
+    </executions>
+  </plugin>
+</plugins>
+</build>
+</project>
